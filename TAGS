@@ -1,0 +1,37 @@
+
+sol.py,946
+class SolSurface:SolSurface13,368
+    def __init__(17,448
+class ProcessingSurface(22,527
+    def __init__(26,624
+    def render(30,714
+class CairoSurface(34,751
+    def __init__(38,832
+    def render(44,966
+class HPGLSurfaceo(48,1003
+    def __init__(52,1091
+    def buildZTable(57,1210
+    def processPath(60,1264
+    def processLayer(67,1455
+    def toHPGL(71,1541
+class SolPath:SolPath77,1691
+    def __init__(81,1748
+    def moveTo(84,1799
+    def lineTo(89,1926
+    def arcTo(93,2016
+    def closePath(96,2058
+class SolLayer:SolLayer100,2095
+    def __init__(104,2154
+class SolContext:SolContext108,2193
+    def __init__(112,2262
+    def beginPath(123,2644
+    def moveTo(127,2743
+    def lineTo(131,2825
+    def arcTo(135,2907
+    def closePath(139,2988
+    def stroke(143,3060
+    def fill(149,3223
+    def drawImage(155,3387
+class Sol:Sol159,3427
+    def __init__(160,3438
+    def context(165,3591

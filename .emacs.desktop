@@ -1,0 +1,83 @@
+;; -*- mode: emacs-lisp; coding: emacs-mule; -*-
+;; --------------------------------------------------------------------------
+;; Desktop File for Emacs
+;; --------------------------------------------------------------------------
+;; Created Mon Oct  6 10:44:54 2008
+;; Desktop file format version 206
+;; Emacs version 22.2.50.1
+
+;; Global section:
+(setq desktop-missing-file-warning nil)
+(setq tags-file-name nil)
+(setq tags-table-list nil)
+(setq search-ring nil)
+(setq regexp-search-ring nil)
+(setq register-alist nil)
+
+;; Buffer section -- buffers listed in same order as in buffer list:
+(desktop-create-buffer 206
+  "/Users/davidnolen/Desktop/Development/py-sol/scratch2.py"
+  "scratch2.py"
+  'python-mode
+  '(abbrev-mode linum-mode yas/minor-mode)
+  307
+  '(nil nil)
+  nil
+  nil
+  '((tab-width . 8) (indent-tabs-mode) (buffer-file-coding-system . undecided-unix)))
+
+(desktop-create-buffer 206
+  "/Users/davidnolen/Desktop/Development/py-sol/sol.py"
+  "sol.py"
+  'python-mode
+  '(abbrev-mode linum-mode yas/minor-mode)
+  436
+  '(nil nil)
+  nil
+  nil
+  '((tab-width . 8) (indent-tabs-mode) (buffer-file-coding-system . undecided-unix)))
+
+(desktop-create-buffer 206
+  nil
+  "py-sol"
+  'dired-mode
+  '(abbrev-mode linum-mode yas/minor-mode)
+  592
+  '(nil nil)
+  t
+  '("/Users/davidnolen/Desktop/Development/py-sol/")
+  nil)
+
+(desktop-create-buffer 206
+  "/Users/davidnolen/Desktop/Development/py-sol/cairo_test.py"
+  "cairo_test.py"
+  'python-mode
+  '(abbrev-mode linum-mode yas/minor-mode)
+  119
+  '(nil nil)
+  nil
+  nil
+  '((tab-width . 8) (indent-tabs-mode) (buffer-file-coding-system . undecided-unix)))
+
+(desktop-create-buffer 206
+  nil
+  "Development"
+  'dired-mode
+  '(abbrev-mode linum-mode yas/minor-mode)
+  2578
+  '(nil nil)
+  t
+  '("/Users/davidnolen/Desktop/Development/")
+  nil)
+
+(desktop-create-buffer 206
+  nil
+  "Python"
+  'dired-mode
+  '(abbrev-mode linum-mode yas/minor-mode)
+  389
+  '(nil nil)
+  t
+  '("/Users/davidnolen/Desktop/Development/Python/")
+  nil)
+
