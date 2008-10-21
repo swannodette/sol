@@ -1,6 +1,7 @@
 from math import *
 
-# Looks like I should inherit from list to get multiplication support
+# An 2D Vector class for the Sol Project
+# Will eventually need a 3 component one
 class Vector():
   """
   2D Vector class.

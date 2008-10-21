@@ -109,7 +109,7 @@ class HPGLSurface(SolSurface):
         pass
 
     def processPath(self, path):
-        # check if immediate mode
+        print "Processing path"
         for instruction in path:
             # extend the render list with the result
             self.renderList.append(getAttr("parse" + capitalize(instruction[0]))(instruction[0]), self)
