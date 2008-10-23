@@ -1,5 +1,24 @@
 from math import *
 
+
+# We use this so can run tuple on Vector instances
+class VectorIterator():
+  def __init__(self, vector):
+    self.vector = vector
+    self.count = 0
+
+  def __iter__(self):
+    return self
+
+  def next(self):
+    value = self.vector[self.count]
+    if value == None:
+      raise StopIteration
+    else:
+      self.count = self.count + 1
+    return value
+    
+
 # An 2D Vector class for the Sol Project
 # Will eventually need a 3 component one
 class Vector():
@@ -10,6 +29,21 @@ class Vector():
     # need to make sure we're dealing with floats here
     self.x = float(x)
     self.y = float(y)
+
+  # so that vectors are viewed as a sequence
+  def __len__(self):
+    return 2
+
+  # allow vectors to be converted by tuple
+  def __iter__(self):
+    return VectorIterator(self)
+
+  # allow treating vector as array
+  def __getitem__(self, key):
+    if key == 0:
+      return self.x
+    if key == 1:
+      return self.y
 
   def __add__(self, other):
     """

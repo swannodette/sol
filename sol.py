@@ -88,7 +88,7 @@ class HPGLSurface(SolSurface):
         pass
 
     def parseMoveTo(self, arguments):
-        #self.renderList.append
+        self.renderList.append("PA%d,%d" % arguments)
         pass
 
     def parseLineTo(self, arguments):
