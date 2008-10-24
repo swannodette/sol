@@ -79,6 +79,30 @@ class Vector():
     """
     return Vector(-self.x, -self.y)
 
+  def proj(self, other):
+    """
+    Project this vector onto another vector and return it.
+    """
+    return (other*self.dot(other)) / other.length()
+    
+  def perp(self):
+    """
+    Return a vector perpendicular to this one.
+    """
+    return Vector(-self.y, -self.x)
+
+  def dot(self, other):
+    """
+    Return the dot produt of this vector.
+    """
+    return (self.x*other.x + self.y*other.y)
+    
+  def copy(self):
+    """
+    Return a copy of this vector.
+    """
+    return Vector(self.x, self.y)
+
   def __repr__(self):
     """
     Return the string representation of this vector.
@@ -108,17 +132,24 @@ class Vector():
     Return a new normalized vector.
     """
     length = self.length()
-    return Vector(self.x/length, self.x/length)
+    return Vector(self.x/length, self.y/length)
 
   def isZero(self):
     """Check to see if this vector is close to the zero vector."""
+    self.clean()
     return self.x == 0 and self.y == 0
     
   def isUnit(self):
     """
     Check to see if this is a unit vector.
     """
-    return self.isZero(1.0 - self.x*self.x - self.y*self.y);
+    return ((1.0 - (self.x*self.x + self.y*self.y)) == 0)
+
+  def sameDirection(self, other):
+    """
+    Check if another vector is pointing in the same direction
+    """
+    return self.dot(other)/(self.length()*other.length()) == 1.0
 
   def clean(self):
     """
@@ -128,36 +159,6 @@ class Vector():
       self.x = 0
     if IsZero(self.y):
       self.y = 0
-
-  def dot(self, other):
-    """
-    Return the dot produt of this vector.
-    """
-    return (self.x*other.x + self.y*other.y)
-    
-  def proj(self, other):
-    """
-    Project this vector onto another vector and return it.
-    """
-    return (other*self.dot(other)) / other.length()
-    
-  def perp(self):
-    """
-    Return a vector perpendicular to this one.
-    """
-    return Vector(-self.y, -self.x)
-    
-  def copy(self):
-    """
-    Return a copy of this vector.
-    """
-    return Vector(self.x, self.y)
-    
-  def getX(self):
-    return self.x
-    
-  def getY(self):
-    return self.y
 
 
 def ZeroVector():
