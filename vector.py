@@ -1,5 +1,7 @@
 from math import *
 
+class VectorError(Exception): pass
+class NotOfVectorClass(VectorError): pass
 
 # We use this so can run tuple on Vector instances
 class VectorIterator():
@@ -29,6 +31,11 @@ class Vector():
     # need to make sure we're dealing with floats here
     self.x = float(x)
     self.y = float(y)
+
+  def __eq__(self, other):
+    if other.__class__ != Vector:
+      raise NotOfVectorClass
+    return ((self.x == other.x) and (self.y == other.y))
 
   # so that vectors are viewed as a sequence
   def __len__(self):
