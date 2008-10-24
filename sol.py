@@ -1,4 +1,4 @@
-import serial 			# for talking to the plotter
+import serial 			# for talking to the plotter, install from sourceforge
 import copy 			# for copying objects
 from vector import Vector	# custom vector class
 
@@ -82,17 +82,33 @@ class HPGLSurface(SolSurface):
 
         SolSurface.__init__(self, context, supportsImmediateMode=True)
         self.renderList = []
+        self.currentPathRenderList = []
         pass
+
+    def setCurrentPath(self, path):
+        self.__currentPath = path
+
+    def currentPath(self):
+        return self.__currentPath
+
+    def setCurrentLayer(self, layer):
+        self.__currentLayer = layer
+
+    def currentLayer(self):
+        return self.__currentLayer
 
     def buildZTable(self, displayList):
         pass
 
     def parseMoveTo(self, arguments):
-        self.renderList.append("PA%d,%d" % arguments)
+        point = arguments[0]
+        self.currentPathRenderList.append("PU;")
+        self.currentPathRenderList.append("PA%d,%d;" % tuple(point))
         pass
 
     def parseLineTo(self, arguments):
-        
+        point = arguments[0]
+        self.currentPathRenderList("PA%d,%d;" % tuple(point))
         pass
 
     def parseArcTo(self, arguments):
@@ -110,6 +126,7 @@ class HPGLSurface(SolSurface):
 
     def processPath(self, path):
         print "Processing path"
+        self.setCurrentPath(path)
         for instruction in path:
             # extend the render list with the result
             self.renderList.append(getAttr("parse" + capitalize(instruction[0]))(instruction[0]), self)
@@ -147,24 +164,27 @@ class SolPath:
     def instructions(self):
         return self.__instructions
 
+    def addInstruction(self, instruction):
+        self.__instructions.append(instruction)
+
     def moveTo(self, point):
         # add the point, return self
-        self.__instructions.append(('moveTo', (point)))
+        self.addInstruction(('moveTo', (point)))
         return self
 
     def lineTo(self, point):
-        self.__instructions.append(('lineTo', (point)))
+        self.addInstruction(('lineTo', (point)))
         return self
 
     def arcTo(self, point):
         pass
 
     def bezierTo(self, cp0, p1, cp1):
-        self.__instructions.append('bezierTo', (cp0, p1, cp1))
+        self.addInstruction('bezierTo', (cp0, p1, cp1))
         pass
 
     def closePath(self):
-        self.__instructions.append('lineTo', self.instructions[0][0])
+        self.addInstruction('lineTo', self.instructions[0][0])
     	pass
 
 
