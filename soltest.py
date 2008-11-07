@@ -57,7 +57,7 @@ class VectorMathCheck(unittest.TestCase):
 
   def testNeg(self):
     """Test neg returns a vector with the opposite direciton"""
-    v1 = vector.Vector(5, 1)
+      v1 = vector.Vector(5, 1)
     v2 = vector.Vector(-5, -1)
     self.assertEqual(-v1, v2)
 
