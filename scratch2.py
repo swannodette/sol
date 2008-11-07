@@ -1,33 +1,49 @@
+import serial
+
 # open up a connection, good defaults, should explore this more
-ser = serial.Serial("/dev/tty.USA19H3d1P1.1", 9600,
+ser = serial.Serial("/dev/tty.USA19H41P1.1", 9600,
               timeout = 	1,
               bytesize = 	serial.EIGHTBITS,
               stopbits = 	serial.STOPBITS_ONE,
               parity =		serial.PARITY_ODD,
               xonxoff = 	1)
 
+print ser
+
 # open the connection
 ser.open()
 
-# write some data out
-#ser.write("IN;")		# initialize the plotter
-#print "read %s" % ser.read(1)
+# initialize the plotter
+#print "Initializing"
 
-# the first instruction works
-#ser.write("IP0,0,4000,4000;")	# setup the plotter units (interesting)
-#print "read %s" % ser.read(1)
+def hpglcom(command):
+  print "send %s" % command
+  # issue the command
+  ser.write(command)
+  # for handshaking
+  ser.read()
 
-#ser.write("SC0,100,0,100;")	# the scaling units
-#print "read %s" % ser.read(1)
+hpglcom(".(;")
+hpglcom(".I81;")
+hpglcom(";")
+hpglcom("17:.N;")
+hpglcom("19:IN;")	
+hpglcom("IP0,0,4000,4000;")
+hpglcom("SC0,100,0,100;")
+hpglcom("SP4;")
 
-ser.write("SP6;")		
-ser.write("PA20,20;")		
-ser.write("PD;")
-ser.write("PA80,20;")		
-ser.write("PA80,80;")		
-ser.write("PA20,80;");
-ser.write("PA20,20;");
-ser.write("PU;")
+hpglcom("PD;")
+
+hpglcom("PA20,20;")	
+hpglcom("PA80,20;")		
+hpglcom("PA80,80;")		
+hpglcom("PA20,80;");
+hpglcom("PA20,20;");
+hpglcom("PU;")
+
+hpglcom("PA90,90;")
+hpglcom("LBHello world*;")
+hpglcom("PU;")
 
 # close the connection
 ser.close()

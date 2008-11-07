@@ -104,12 +104,16 @@ class VectorMathCheck(unittest.TestCase):
     self.assertTrue(v1.x == 0.0 and v1.y == 0.0)
 
   def testProj(self):
+    """Test projections return the correct value"""
     pass
 
   def testPerp(self):
-    pass
+    """Test that perpendicular returns the correct value"""
+    v1 = vector.Vector(5, 10).perp()
+    self.assertTrue(v1 == vector.Vector(-10, -5))
 
   def testDot(self):
+    """Test that dot product returns the correct value"""
     pass
 
 if __name__ == "__main__":
