@@ -1,7 +1,7 @@
 import serial
 
 # open up a connection, good defaults, should explore this more
-ser = serial.Serial("/dev/tty.USA19H41P1.1", 9600,
+ser = serial.Serial("/dev/tty.KeySerial1", 9600,
               timeout = 	1,
               bytesize = 	serial.EIGHTBITS,
               stopbits = 	serial.STOPBITS_ONE,
@@ -18,7 +18,7 @@ ser.open()
 
 def hpglcom(command):
   print "send %s" % command
-  # issue the command
+  # issue the command, should probably auto add semis
   ser.write(command)
   # for handshaking
   ser.read()
@@ -42,6 +42,8 @@ hpglcom("PA20,20;");
 hpglcom("PU;")
 
 hpglcom("PA90,90;")
+# set the terminator
+hpglcom("DT*,1;")
 hpglcom("LBHello world*;")
 hpglcom("PU;")
 
