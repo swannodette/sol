@@ -13,7 +13,6 @@ BATCH_MODE = 1
 def capitalize(string):
     return string[0].upper() + string[1:len(string)]
 
-
 # ========================================
 # SolSurface
 # ========================================
@@ -22,16 +21,22 @@ class SolSurface:
     """
     Abstract class for destination renderers.
     """
-    def __init__(self, context, supportsImmediateMode=False):
-        self.context = context
-        self.__supportsImmediateMode__ = supportsImmediateMode
+    def __init__(self, supportsImmediateMode=False):
+        self.__context = None
+        self.__supportsImmediateMode = supportsImmediateMode
         pass
 
+    def setContext(self, context):
+        self.__context = context
+
+    def context(self):
+        return self.__context
+
     def setSupportsImmediateMode(self, value):
-        self.__supportsImmediateMode__ = value
+        self.__supportsImmediateMode = value
 
     def supportsImmediateMode(self):
-        return self.__supportsImmediateMode__
+        return self.__supportsImmediateMode
 
 
 # ========================================
@@ -76,11 +81,11 @@ class HPGLSurface(SolSurface):
     """
     Output to device or to a text file.
     """
-    def __init__(self, context):
+    def __init__(self):
         # for treating strings like streams; good ol' Lisp
         import StringIO
-
-        SolSurface.__init__(self, context, supportsImmediateMode=True)
+        
+        SolSurface.__init__(self, supportsImmediateMode=True)
         self.renderList = []
         self.currentPathRenderList = []
         pass
@@ -100,15 +105,14 @@ class HPGLSurface(SolSurface):
     def buildZTable(self, displayList):
         pass
 
-    def parseMoveTo(self, arguments):
-        point = arguments[0]
+    def parseMoveTo(self, point):
+        print point
         self.currentPathRenderList.append("PU;")
         self.currentPathRenderList.append("PA%d,%d;" % tuple(point))
         pass
 
-    def parseLineTo(self, arguments):
-        point = arguments[0]
-        self.currentPathRenderList("PA%d,%d;" % tuple(point))
+    def parseLineTo(self, point):
+        self.currentPathRenderList.append("PA%d,%d;" % tuple(point))
         pass
 
     def parseArcTo(self, arguments):
@@ -127,9 +131,12 @@ class HPGLSurface(SolSurface):
     def processPath(self, path):
         print "Processing path"
         self.setCurrentPath(path)
-        for instruction in path:
+        for instruction in path.instructions():
+            print instruction
+            methodName = "parse%s" % capitalize(instruction[0])
+            print methodName
             # extend the render list with the result
-            self.renderList.append(getAttr("parse" + capitalize(instruction[0]))(instruction[0]), self)
+            self.renderList.append(getattr(self, methodName)(instruction[1]))
             pass
         return self
 
@@ -138,14 +145,18 @@ class HPGLSurface(SolSurface):
         pass
 
     def toHPGL(self):
-        displayList = self.context.displayList
+        displayList = self.context().displayList()
+        print "toHPGL"
+        print displayList
         # build a z table for hidden line removal
         for object in displayList:
+            print "object %s" % object
             if object.__class__ == SolPath:
                 self.processPath(object)
             if object.__class__ == SolLayer:
                 self.processLayer(object)
         # process each layer
+        print self.currentPathRenderList
 
 # ========================================
 # SolPath
@@ -165,6 +176,7 @@ class SolPath:
         return self.__instructions
 
     def addInstruction(self, instruction):
+        print "Add instruction (%s, %s)" % instruction
         self.__instructions.append(instruction)
 
     def moveTo(self, point):
@@ -180,11 +192,11 @@ class SolPath:
         pass
 
     def bezierTo(self, cp0, p1, cp1):
-        self.addInstruction('bezierTo', (cp0, p1, cp1))
+        self.addInstruction(('bezierTo', (cp0, p1, cp1)))
         pass
 
     def closePath(self):
-        self.addInstruction('lineTo', self.instructions[0][0])
+        self.addInstruction(('lineTo', (self.__instructions[0][1])))
     	pass
 
 
@@ -209,9 +221,8 @@ class SolContext:
     Represents the drawing context
     """
     def __init__(self, surface=None, mode=IMMEDIATE_MODE):
-        # set the surface and backreference
         self.__surface = surface
-
+        # set backreference from surface
         if self.__surface != None:
             self.__surface.setContext(self)
 
@@ -220,7 +231,7 @@ class SolContext:
         
         # create current path and display list instance vars
         self.currentPath = None
-        self.displayList = []
+        self.__displayList = []
 
 
     def setSurface(self, surface):
@@ -229,6 +240,10 @@ class SolContext:
 
     def surface(self):
         return self.__surface
+
+    
+    def displayList(self):
+        return self.__displayList
 
 
     def beginPath(self):
@@ -257,21 +272,20 @@ class SolContext:
 
 
     def closePath(self):
-        self.currentPath.close()
+        self.currentPath.closePath()
         pass
 
 
     def stroke(self):
-        self.currentPath.stroke()
         # update the display list the path
-        self.displayList.append(self.currentPath)
+        self.__displayList.append(self.currentPath)
         pass
 
 
     def fill(self):
         self.currentPath.fill()
         # update the display list with the path
-        self.displayList.append(self.currentPath)
+        self.__displayList.append(self.currentPath)
         pass
 
 
@@ -331,6 +345,17 @@ class Sol:
 
     def context(self):
         pass
+
+ctxt = None
+def test():
+    global ctxt
+    ctxt = SolContext(HPGLSurface())
+    ctxt.beginPath()
+    ctxt.moveTo(Vector(10, 10))
+    ctxt.lineTo(Vector(50, 50))
+    ctxt.closePath()
+    ctxt.stroke()
+    ctxt.surface().toHPGL()
 
 """
 surface = HPGLSurface()
