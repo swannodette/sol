@@ -51,3 +51,4 @@ hpglcom("PU;")
 ser.close()
 
 print "Done"
+print "Cool"
