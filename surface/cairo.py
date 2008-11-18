@@ -1,4 +1,4 @@
-import surface.base;
+import surface.base
 
 # ========================================
 # CairoSurface

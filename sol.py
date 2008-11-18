@@ -1,6 +1,6 @@
 import serial 			# for talking to the plotter, install from sourceforge
 import copy 			# for copying objects
-from vector import Vector	# custom vector class
+import math.vector 		# custom vector class
 import solcontext
 import surface.hpgl 		# load hpgl support
 

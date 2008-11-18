@@ -1,5 +1,5 @@
-import surface.base;
-import objects.path;
+import surface.base
+import objects.path
 
 # ========================================
 # HPGLSurface
