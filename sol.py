@@ -1,14 +1,13 @@
 import serial 			# for talking to the plotter, install from sourceforge
 import copy 			# for copying objects
 from vector import Vector	# custom vector class
+import solcontext
 
 # StringIO.StringIO() creates an output "file"
 # StringIO.StringIO(bufferString) creates an input "file"
 
 # Immediate mode will render right away if appropiate
 # Batch will render when flushed
-IMMEDIATE_MODE = 0
-BATCH_MODE = 1
 
 def capitalize(string):
     return string[0].upper() + string[1:len(string)]
@@ -27,15 +26,19 @@ class SolSurface:
         pass
 
     def setContext(self, context):
+        """Setter for the private context reference."""
         self.__context = context
 
     def context(self):
+        """Getter for the private context reference."""
         return self.__context
 
     def setSupportsImmediateMode(self, value):
+        """Set the immediate mode flag.  Not implemented."""
         self.__supportsImmediateMode = value
 
     def supportsImmediateMode(self):
+        """Returns a boolean value stating whether this surface supports immediate mode."""
         return self.__supportsImmediateMode
 
 
@@ -88,22 +91,38 @@ class HPGLSurface(SolSurface):
         SolSurface.__init__(self, supportsImmediateMode=True)
         self.renderList = []
         self.currentPathRenderList = []
+        self.initializeDevice()
         pass
+
+    
+    def initializeDevice(self):
+        self.renderList.append(".(;")
+        self.renderList.append(".I81;")
+        self.renderList.append(";")
+        self.renderList.append("17:.N;")
+        self.renderList.append("19:IN;")
+        pass
+
 
     def setCurrentPath(self, path):
         self.__currentPath = path
 
+
     def currentPath(self):
         return self.__currentPath
+
 
     def setCurrentLayer(self, layer):
         self.__currentLayer = layer
 
+
     def currentLayer(self):
         return self.__currentLayer
 
+
     def buildZTable(self, displayList):
         pass
+
 
     def parseMoveTo(self, point):
         print point
@@ -111,24 +130,37 @@ class HPGLSurface(SolSurface):
         self.currentPathRenderList.append("PA%d,%d;" % tuple(point))
         pass
 
+
     def parseLineTo(self, point):
         self.currentPathRenderList.append("PA%d,%d;" % tuple(point))
         pass
 
+
     def parseArcTo(self, arguments):
         pass
+
 
     def parseBezierTo(self, arguments):
         # decompose the bezier
         pass
 
+
     def parseStroke(self):
+        # commit the path
+        self.renderList.append("PD;")
+        self.renderList.extend(self.currentPathRenderList);
         pass
+
 
     def parseFill(self):
+        # commit the path
         pass
 
+
     def processPath(self, path):
+        """
+        Process a single path.
+        """
         print "Processing path"
         self.setCurrentPath(path)
         for instruction in path.instructions():
@@ -136,15 +168,22 @@ class HPGLSurface(SolSurface):
             methodName = "parse%s" % capitalize(instruction[0])
             print methodName
             # extend the render list with the result
-            self.renderList.append(getattr(self, methodName)(instruction[1]))
-            pass
+            getattr(self, methodName)(instruction[1])
         return self
 
+
     def processLayer(self, path):
+        """
+        Process a layer.
+        """
         # check if not immediate mode
         pass
 
+
     def toHPGL(self):
+        """
+        Converts the display list of the associated Sol context to HPGL instructions.
+        """
         displayList = self.context().displayList()
         print "toHPGL"
         print displayList
@@ -156,48 +195,8 @@ class HPGLSurface(SolSurface):
             if object.__class__ == SolLayer:
                 self.processLayer(object)
         # process each layer
-        print self.currentPathRenderList
+        print self.renderList
 
-# ========================================
-# SolPath
-# ========================================
-
-class SolPath:
-    """
-    Abstraction for paths
-    """
-    def __init__(self):
-        self.__instructions = []
-
-    def setInstructions(self, instructions):
-        self.__instructions = instructions
-
-    def instructions(self):
-        return self.__instructions
-
-    def addInstruction(self, instruction):
-        print "Add instruction (%s, %s)" % instruction
-        self.__instructions.append(instruction)
-
-    def moveTo(self, point):
-        # add the point, return self
-        self.addInstruction(('moveTo', (point)))
-        return self
-
-    def lineTo(self, point):
-        self.addInstruction(('lineTo', (point)))
-        return self
-
-    def arcTo(self, point):
-        pass
-
-    def bezierTo(self, cp0, p1, cp1):
-        self.addInstruction(('bezierTo', (cp0, p1, cp1)))
-        pass
-
-    def closePath(self):
-        self.addInstruction(('lineTo', (self.__instructions[0][1])))
-    	pass
 
 
 # ========================================
@@ -212,129 +211,6 @@ class SolLayer:
         pass
 
 
-# ========================================
-# SolContext
-# ========================================
-
-class SolContext:
-    """
-    Represents the drawing context
-    """
-    def __init__(self, surface=None, mode=IMMEDIATE_MODE):
-        self.__surface = surface
-        # set backreference from surface
-        if self.__surface != None:
-            self.__surface.setContext(self)
-
-        # immediate mode or normal mode, do it all at the end of a drawing cycle
-        self.mode = mode
-        
-        # create current path and display list instance vars
-        self.currentPath = None
-        self.__displayList = []
-
-
-    def setSurface(self, surface):
-        self.__surface = surface
-
-
-    def surface(self):
-        return self.__surface
-
-    
-    def displayList(self):
-        return self.__displayList
-
-
-    def beginPath(self):
-        # create a new current path
-        self.currentPath = SolPath()
-
-
-    def moveTo(self, point):
-        self.currentPath.moveTo(point)
-        pass
-
-
-    def lineTo(self, point):
-        self.currentPath.lineTo(point)
-        pass
-
-
-    def arcTo(self, point):
-        self.currentPath.lineTo(point)
-        pass
-
-
-    def bezierTo(self, cp0, p1, cp1):
-        self.currentPath.bezierTo(cp0, p1, cp1)
-        pass
-
-
-    def closePath(self):
-        self.currentPath.closePath()
-        pass
-
-
-    def stroke(self):
-        # update the display list the path
-        self.__displayList.append(self.currentPath)
-        pass
-
-
-    def fill(self):
-        self.currentPath.fill()
-        # update the display list with the path
-        self.__displayList.append(self.currentPath)
-        pass
-
-
-    def drawImage(self):
-        pass
-
-
-    def fillRect(self):
-        pass
-
-
-    def fillEllipse(self):
-        pass
-
-
-    def clearRect(self):
-        pass
-
-
-    def translate(self):
-        pass
-
-
-    def rotate(self):
-        pass
-
-
-    def scale(self):
-        pass
-
-
-    def setCTM(self, ctm):
-        pass
-
-    # Here is a place where Lisp's maskable alists
-    # make a whole lot of sense!
-    def save(self):
-        pass
-
-
-    def restore(self):
-        pass
-
-
-    def flush(self):
-        """
-        Flush all current drawing instructions.
-        """
-        pass
 
 
 class Sol:
@@ -349,7 +225,7 @@ class Sol:
 ctxt = None
 def test():
     global ctxt
-    ctxt = SolContext(HPGLSurface())
+    ctxt = solcontext.SolContext(HPGLSurface())
     ctxt.beginPath()
     ctxt.moveTo(Vector(10, 10))
     ctxt.lineTo(Vector(50, 50))
