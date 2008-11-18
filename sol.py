@@ -13,26 +13,6 @@ import surface.hpgl 		# load hpgl support
 def capitalize(string):
     return string[0].upper() + string[1:len(string)]
 
-# ========================================
-# SolLayer
-# ========================================
-
-class SolLayer:
-    """
-    Abstraction for layers
-    """
-    def __init__(self):
-        pass
-
-class Sol:
-    def __init__(self):
-        self.__context__ = None # cairo or plotter
-        self.__mode__ = None    # immediate mode, or batch mode
-        pass
-
-    def context(self):
-        pass
-
 ctxt = None
 def test():
     global ctxt
