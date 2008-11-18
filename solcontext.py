@@ -1,5 +1,4 @@
-# import solpath
-import objects.path
+import solobjects.path
 
 # ==================================================
 # Constants
