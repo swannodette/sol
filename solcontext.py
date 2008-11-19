@@ -44,6 +44,26 @@ class SolContext:
     self.__instructionStack = []
 
   
+  def saveState(self):
+    """
+    Saves the graphics state
+    """
+    pass
+
+
+  def restoreGState(self):
+    """
+    Restores the graphics state
+    """
+    pass
+
+  
+  def getState(Self):
+    """
+    Returns a dict representing the current state
+    """
+
+
   def point(self):
     return lastItem(self.__point)
 
