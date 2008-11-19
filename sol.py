@@ -10,16 +10,13 @@ import surface.hpgl 		# load hpgl support
 # Immediate mode will render right away if appropiate
 # Batch will render when flushed
 
-def capitalize(string):
-    return string[0].upper() + string[1:len(string)]
-
 ctxt = None
 def test():
     global ctxt
     ctxt = solcontext.SolContext(surface.hpgl.HPGLSurface())
     ctxt.beginPath()
-    ctxt.moveTo(Vector(10, 10))
-    ctxt.lineTo(Vector(50, 50))
+    ctxt.moveTo(10, 10)
+    ctxt.lineTo(50, 50)
     ctxt.closePath()
     ctxt.stroke()
     ctxt.surface().toHPGL()

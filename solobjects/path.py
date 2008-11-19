@@ -1,3 +1,5 @@
+import solmath.vector
+
 # ========================================
 # SolPath
 # ========================================
@@ -28,14 +30,14 @@ class SolPath:
     self.__instructions.append(instruction)
 
 
-  def moveTo(self, point):
+  def moveTo(self, x, y):
     # add the point, return self
-    self.addInstruction(('moveTo', (point)))
+    self.addInstruction(('moveTo', (solmath.vector.Vector(x, y))))
     return self
 
 
-  def lineTo(self, point):
-    self.addInstruction(('lineTo', (point)))
+  def lineTo(self, x, y):
+    self.addInstruction(('lineTo', (solmath.vector.Vector(x, y))))
     return self
 
 
@@ -43,8 +45,10 @@ class SolPath:
     pass
 
 
-  def bezierTo(self, cp0, p1, cp1):
-    self.addInstruction(('bezierTo', (cp0, p1, cp1)))
+  def bezierTo(self, cp0x, cp0y, p0x, p0y, cp1x, cp1y):
+    self.addInstruction(('bezierTo', (solmath.vector.Vector(cp0x, cp0y), 
+                                      solmath.vector.Vector(p0x, p0y), 
+                                      solmath.vector.Vector(cp1x, cp1y))))
     pass
 
     

@@ -69,32 +69,32 @@ class SolContext:
     Beging a path.
     """
     # create a new current path
-    self.currentPath = objects.path.SolPath()
+    self.currentPath = solobjects.path.SolPath()
 
 
-  def moveTo(self, point):
+  def moveTo(self, x, y):
     """
     Move the virtual pen to a new location.
     """
-    self.currentPath.moveTo(point)
+    self.currentPath.moveTo(x, y)
     pass
 
 
-  def lineTo(self, point):
+  def lineTo(self, x, y):
     """
     Line to from the last point to the new point.
     """
-    self.currentPath.lineTo(point)
+    self.currentPath.lineTo(x, y)
     pass
 
 
-  def arcTo(self, point):
-    self.currentPath.lineTo(point)
+  def arcTo(self, x, y):
+    self.currentPath.arcTo(x, y)
     pass
 
 
-  def bezierTo(self, cp0, p1, cp1):
-    self.currentPath.bezierTo(cp0, p1, cp1)
+  def bezierTo(self, cp0x, cp0y, p0x, p0y, cp1x, cp1y):
+    self.currentPath.bezierTo(cp0x, cp0y, p0x, p0y, cp1x, cp1y)
     pass
 
 

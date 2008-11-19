@@ -1,5 +1,7 @@
+import solutils.string
 import surface.base
 import solobjects.path
+import solobjects.layer
 
 # ========================================
 # HPGLSurface
@@ -90,7 +92,7 @@ class HPGLSurface(surface.base.SolSurface):
     self.setCurrentPath(path)
     for instruction in path.instructions():
       print instruction
-      methodName = "parse%s" % capitalize(instruction[0])
+      methodName = "parse%s" % solutils.string.capitalize(instruction[0])
       print methodName
       # extend the render list with the result
       getattr(self, methodName)(instruction[1])
@@ -115,9 +117,9 @@ class HPGLSurface(surface.base.SolSurface):
     # build a z table for hidden line removal
     for object in displayList:
       print "object %s" % object
-      if object.__class__ == objects.path.SolPath:
+      if object.__class__ == solobjects.path.SolPath:
         self.processPath(object)
-      if object.__class__ == objects.layer.SolLayer:
+      if object.__class__ == solobjects.layer.SolLayer:
         self.processLayer(object)
     # process each layer
     print self.renderList
