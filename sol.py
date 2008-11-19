@@ -1,7 +1,8 @@
 import serial 			# for talking to the plotter, install from sourceforge
 import copy 			# for copying objects
+
 import solmath.vector 		# custom vector class
-import solcontext
+import solcontext		# load the context class
 import surface.hpgl 		# load hpgl support
 
 # StringIO.StringIO() creates an output "file"
@@ -12,15 +13,15 @@ import surface.hpgl 		# load hpgl support
 
 ctxt = None
 def test():
-    global ctxt
-    ctxt = solcontext.SolContext(surface.hpgl.HPGLSurface())
-    ctxt.beginPath()
-    ctxt.moveTo(10, 10)
-    ctxt.lineTo(50, 50)
-    ctxt.closePath()
-    ctxt.stroke()
-    ctxt.surface().toHPGL()
-
+  global ctxt
+  ctxt = solcontext.SolContext(surface.hpgl.HPGLSurface())
+  ctxt.beginPath()
+  ctxt.moveTo(10, 10)
+  ctxt.lineTo(50, 50)
+  ctxt.closePath()
+  ctxt.stroke()
+  ctxt.surface().toHPGL()
+    
 """
 surface = HPGLSurface()
 context = SolContext(surface)
@@ -45,7 +46,7 @@ ser = serial.Serial("/dev/tty.USA19H3d1P1.1", 9600,
 hpgl = surface.toHPGL()
 
 for instruction in hpgl:
-    ser.write(instruction)
+  ser.write(instruction)
 
 ser.close()
 """

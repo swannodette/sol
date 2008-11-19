@@ -1,4 +1,5 @@
 import solobjects.path
+from solutils.list import *	# import lastItem
 
 # ==================================================
 # Constants
@@ -41,6 +42,22 @@ class SolContext:
     self.__path = []
     self.__clippingPath = []
     self.__instructionStack = []
+
+  
+  def point(self):
+    return lastItem(self.__point)
+
+
+  def fillColor(self):
+    return lastItem(self.__fillColor)
+
+
+  def lineWidth(self):
+    return lastItem(self.__lineWidth)
+
+
+  def path(self):
+    return lastItem(self.__path)
 
 
   def setSurface(self, surface):
