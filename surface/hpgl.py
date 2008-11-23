@@ -1,3 +1,4 @@
+import serial
 import solutils.string
 import surface.base
 import solobjects.path
@@ -23,6 +24,9 @@ class HPGLSurface(surface.base.SolSurface):
 
   
   def initializeDevice(self):
+    """
+    Generates the instructions needed to initialize the plotter.
+    """
     self.renderList.append(".(;")
     self.renderList.append(".I81;")
     self.renderList.append(";")
@@ -32,22 +36,37 @@ class HPGLSurface(surface.base.SolSurface):
 
 
   def setCurrentPath(self, path):
+    """
+    Sets the current path.
+    """
     self.__currentPath = path
 
 
   def currentPath(self):
+    """
+    Returns the current path, a SolPath instance.
+    """
     return self.__currentPath
 
 
   def setCurrentLayer(self, layer):
+    """
+    Sets the current layer.
+    """
     self.__currentLayer = layer
 
 
   def currentLayer(self):
-      return self.__currentLayer
+    """
+    Returns the current layer.
+    """
+    return self.__currentLayer
 
 
   def buildZTable(self, displayList):
+    """
+    Build the z table needed for hidden line removal.
+    """
     pass
 
 
@@ -123,5 +142,29 @@ class HPGLSurface(surface.base.SolSurface):
         self.processLayer(object)
     # process each layer
     print self.renderList
+
+
+  def writeToPlotter(self):
+    """
+    Write out the render list to the plotter.
+    """
+    # open up a connection, good defaults, should explore this more
+    ser = serial.Serial("/dev/tty.KeySerial1", 9600,
+                        timeout = 	1,
+                        bytesize = 	serial.EIGHTBITS,
+                        stopbits = 	serial.STOPBITS_ONE,
+                        parity =	serial.PARITY_ODD,
+                        xonxoff = 	1)
+    
+
+    def hpglcom(command):
+      print "send %s" % command
+      # issue the command, should probably auto add semis
+      ser.write(command)
+      # for handshaking
+      ser.read()
+
+    for command in self.renderList:
+      hpglcom(command)
 
 
