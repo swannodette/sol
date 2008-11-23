@@ -42,6 +42,8 @@ class SolContext:
     self.__path = []
     self.__clippingPath = []
     self.__instructionStack = []
+    self.__pageBounds = [0, 0, 100, 100]
+    self.__scale = [0, 0, 1000, 1000]
 
   
   def saveState(self):
@@ -114,7 +116,6 @@ class SolContext:
     Move the virtual pen to a new location.
     """
     self.currentPath.moveTo(x, y)
-    pass
 
 
   def lineTo(self, x, y):
@@ -127,31 +128,24 @@ class SolContext:
 
   def arcTo(self, x, y):
     self.currentPath.arcTo(x, y)
-    pass
 
 
   def bezierTo(self, cp0x, cp0y, p0x, p0y, cp1x, cp1y):
     self.currentPath.bezierTo(cp0x, cp0y, p0x, p0y, cp1x, cp1y)
-    pass
 
 
   def closePath(self):
     self.currentPath.closePath()
-    pass
 
 
   def stroke(self):
     # update the display list the path
-    self.currentPath.stroke()
     self.__displayList.append(self.currentPath)
-    pass
 
 
   def fill(self):
-    self.currentPath.fill()
     # update the display list with the path
     self.__displayList.append(self.currentPath)
-    pass
 
 
   def drawImage(self):

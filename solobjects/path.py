@@ -26,7 +26,6 @@ class SolPath:
 
 
   def addInstruction(self, instruction):
-    print "Add instruction (%s, %s)" % instruction
     self.__instructions.append(instruction)
 
 
@@ -49,10 +48,6 @@ class SolPath:
     self.addInstruction(('bezierTo', (solmath.vector.Vector(cp0x, cp0y), 
                                       solmath.vector.Vector(p0x, p0y), 
                                       solmath.vector.Vector(cp1x, cp1y))))
-    pass
-
-    
-  def stroke(self):
     pass
 
 

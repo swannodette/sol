@@ -2,192 +2,225 @@
 ;; --------------------------------------------------------------------------
 ;; Desktop File for Emacs
 ;; --------------------------------------------------------------------------
-;; Created Tue Nov 18 17:25:40 2008
+;; Created Sun Nov 23 16:43:33 2008
 ;; Desktop file format version 206
-;; Emacs version 22.2.50.1
+;; Emacs version 22.3.1
 
 ;; Global section:
 (setq desktop-missing-file-warning nil)
 (setq tags-file-name nil)
 (setq tags-table-list nil)
-(setq search-ring '("solsurface" "imm" "solpath" "solcontext" "solpath"))
+(setq search-ring '("yas" "currentpathrenderlist" "Add" "renderlist"))
 (setq regexp-search-ring nil)
 (setq register-alist nil)
 
 ;; Buffer section -- buffers listed in same order as in buffer list:
 (desktop-create-buffer 206
-  "/Users/davidnolen/Desktop/Development/py-sol/surface/quartz.py"
-  "quartz.py"
-  'python-mode
-  '(abbrev-mode linum-mode yas/minor-mode)
-  18
-  '(nil nil)
-  nil
-  nil
-  '((tab-width . 8) (indent-tabs-mode) (buffer-file-coding-system . iso-latin-1)))
-
-(desktop-create-buffer 206
-  "/Users/davidnolen/Desktop/Development/py-sol/surface/__init__.py"
-  "__init__.py"
-  'python-mode
-  '(abbrev-mode linum-mode yas/minor-mode)
-  59
-  '(1 nil)
-  nil
-  nil
-  '((tab-width . 8) (indent-tabs-mode) (buffer-file-coding-system . iso-latin-1)))
-
-(desktop-create-buffer 206
-  "/Users/davidnolen/Desktop/Development/py-sol/objects/path.py"
-  "path.py"
-  'python-mode
-  '(abbrev-mode linum-mode yas/minor-mode)
-  2
-  '(nil nil)
-  nil
-  nil
-  '((tab-width . 8) (indent-tabs-mode) (buffer-file-coding-system . iso-latin-1)))
-
-(desktop-create-buffer 206
-  "/Users/davidnolen/Desktop/Development/py-sol/objects/layer.py"
-  "layer.py"
-  'python-mode
-  '(abbrev-mode linum-mode yas/minor-mode)
-  2
-  '(nil nil)
-  nil
-  nil
-  '((tab-width . 8) (indent-tabs-mode) (buffer-file-coding-system . iso-latin-1)))
-
-(desktop-create-buffer 206
-  "/Users/davidnolen/Desktop/Development/py-sol/objects/__init__.py"
-  "__init__.py<2>"
-  'python-mode
-  '(abbrev-mode linum-mode yas/minor-mode)
-  28
-  '(1 nil)
-  nil
-  nil
-  '((tab-width . 8) (indent-tabs-mode) (buffer-file-coding-system . iso-latin-1)))
-
-(desktop-create-buffer 206
-  nil
-  "objects"
-  'dired-mode
-  '(abbrev-mode linum-mode yas/minor-mode)
-  216
-  '(nil nil)
-  t
-  '("/Users/davidnolen/Desktop/Development/py-sol/objects/")
-  nil)
-
-(desktop-create-buffer 206
-  nil
-  "py-sol"
-  'dired-mode
-  '(abbrev-mode linum-mode yas/minor-mode)
-  327
-  '(nil nil)
-  t
-  '("/Users/davidnolen/Desktop/Development/py-sol/")
-  nil)
-
-(desktop-create-buffer 206
-  "/Users/davidnolen/Desktop/Development/py-sol/surface/hpgl.py"
+  "/Users/davidnolen/Desktop/Development/pysol/surface/hpgl.py"
   "hpgl.py"
   'python-mode
   '(abbrev-mode linum-mode yas/minor-mode)
-  1
-  '(2744 nil)
-  nil
-  nil
-  '((tab-width . 8) (indent-tabs-mode) (buffer-file-coding-system . iso-latin-1)))
-
-(desktop-create-buffer 206
-  "/Users/davidnolen/Desktop/Development/py-sol/sol.py"
-  "sol.py"
-  'python-mode
-  '(abbrev-mode linum-mode yas/minor-mode)
-  1169
-  '(960 nil)
+  744
+  '(2401 nil)
   nil
   nil
   '((tab-width . 8) (indent-tabs-mode) (buffer-file-coding-system . undecided-unix)))
 
 (desktop-create-buffer 206
-  "/Users/davidnolen/Desktop/Development/py-sol/surface/cairo.py"
-  "cairo.py"
-  'python-mode
+  "/Users/davidnolen/elisp/yasnippet/snippets/text-mode/python-mode/defm"
+  "defm"
+  'fundamental-mode
   '(abbrev-mode linum-mode yas/minor-mode)
-  20
-  '(157 nil)
+  977
+  '(974 nil)
   nil
   nil
-  '((tab-width . 8) (indent-tabs-mode) (buffer-file-coding-system . iso-latin-1)))
+  '((buffer-file-coding-system . mule-utf-8-dos)))
 
 (desktop-create-buffer 206
   nil
-  "surface"
+  "python-mode"
   'dired-mode
   '(abbrev-mode linum-mode yas/minor-mode)
-  531
+  519
   '(nil nil)
   t
-  '("/Users/davidnolen/Desktop/Development/py-sol/surface/")
+  '("/Users/davidnolen/elisp/yasnippet/snippets/text-mode/python-mode/")
   nil)
 
 (desktop-create-buffer 206
-  "/Users/davidnolen/Desktop/Development/py-sol/surface/processing.py"
-  "processing.py"
+  nil
+  "text-mode"
+  'dired-mode
+  '(abbrev-mode linum-mode yas/minor-mode)
+  906
+  '(nil nil)
+  t
+  '("/Users/davidnolen/elisp/yasnippet/snippets/text-mode/")
+  nil)
+
+(desktop-create-buffer 206
+  nil
+  "snippets"
+  'dired-mode
+  '(abbrev-mode linum-mode yas/minor-mode)
+  317
+  '(nil nil)
+  t
+  '("/Users/davidnolen/elisp/yasnippet/snippets/")
+  nil)
+
+(desktop-create-buffer 206
+  nil
+  "yasnippet"
+  'dired-mode
+  '(abbrev-mode linum-mode yas/minor-mode)
+  503
+  '(nil nil)
+  t
+  '("/Users/davidnolen/elisp/yasnippet/")
+  nil)
+
+(desktop-create-buffer 206
+  nil
+  "elisp"
+  'dired-mode
+  '(abbrev-mode linum-mode yas/minor-mode)
+  3753
+  '(255 nil)
+  t
+  '("/Users/davidnolen/elisp/")
+  nil)
+
+(desktop-create-buffer 206
+  nil
+  "doc"
+  'dired-mode
+  '(abbrev-mode linum-mode yas/minor-mode)
+  204
+  '(nil nil)
+  t
+  '("/Users/davidnolen/elisp/yasnippet/doc/")
+  nil)
+
+(desktop-create-buffer 206
+  "/Users/davidnolen/Desktop/Development/pysol/sol.py"
+  "sol.py"
   'python-mode
   '(abbrev-mode linum-mode yas/minor-mode)
-  65
-  '(392 nil)
+  370
+  '(659 nil)
   nil
   nil
   '((tab-width . 8) (indent-tabs-mode) (buffer-file-coding-system . undecided-unix)))
 
 (desktop-create-buffer 206
-  "/Users/davidnolen/Desktop/Development/py-sol/surface/base.py"
-  "base.py"
-  'python-mode
-  '(abbrev-mode linum-mode yas/minor-mode)
-  57
-  '(1 nil)
-  nil
-  nil
-  '((tab-width . 8) (indent-tabs-mode) (buffer-file-coding-system . iso-latin-1)))
-
-(desktop-create-buffer 206
-  "/Users/davidnolen/Desktop/Development/py-sol/solcontext.py"
+  "/Users/davidnolen/Desktop/Development/pysol/solcontext.py"
   "solcontext.py"
   'python-mode
   '(abbrev-mode linum-mode yas/minor-mode)
-  98
-  '(34 nil)
-  nil
-  nil
-  '((tab-width . 8) (indent-tabs-mode) (buffer-file-coding-system . iso-latin-1)))
-
-(desktop-create-buffer 206
-  "/Users/davidnolen/Desktop/Development/py-sol/solpath.py"
-  "solpath.py"
-  'python-mode
-  '(abbrev-mode linum-mode yas/minor-mode)
-  1
-  '(989 nil)
-  nil
-  nil
-  '((tab-width . 8) (indent-tabs-mode) (buffer-file-coding-system . iso-latin-1)))
-
-(desktop-create-buffer 206
-  "/Developer/Examples/Quartz/Python/bitmap2.py"
-  "bitmap2.py"
-  'python-mode
-  '(abbrev-mode linum-mode yas/minor-mode)
-  3062
-  '(3148 nil)
+  777
+  '(nil nil)
   nil
   nil
   '((tab-width . 8) (indent-tabs-mode) (buffer-file-coding-system . undecided-unix)))
+
+(desktop-create-buffer 206
+  "/Users/davidnolen/Desktop/Development/pysol/solobjects/path.py"
+  "path.py"
+  'python-mode
+  '(abbrev-mode linum-mode yas/minor-mode)
+  527
+  '(484 nil)
+  nil
+  nil
+  '((tab-width . 8) (indent-tabs-mode) (buffer-file-coding-system . undecided-unix)))
+
+(desktop-create-buffer 206
+  "/Users/davidnolen/.bash_profile"
+  ".bash_profile"
+  'sh-mode
+  '(abbrev-mode linum-mode yas/minor-mode)
+  310
+  '(nil nil)
+  nil
+  nil
+  '((buffer-file-coding-system . undecided-unix)))
+
+(desktop-create-buffer 206
+  "/Users/davidnolen/Desktop/Development/pysol/scratch2.py"
+  "scratch2.py"
+  'python-mode
+  '(abbrev-mode linum-mode yas/minor-mode)
+  683
+  '(16 nil)
+  nil
+  nil
+  '((tab-width . 8) (indent-tabs-mode) (buffer-file-coding-system . undecided-unix)))
+
+(desktop-create-buffer 206
+  "/Users/davidnolen/Desktop/Development/pysol/__init__.py"
+  "__init__.py<2>"
+  'python-mode
+  '(abbrev-mode linum-mode yas/minor-mode)
+  1
+  '(nil nil)
+  nil
+  nil
+  '((tab-width . 8) (indent-tabs-mode)))
+
+(desktop-create-buffer 206
+  "/Users/davidnolen/Desktop/Development/pysol/solmath/vector.py"
+  "vector.py"
+  'python-mode
+  '(abbrev-mode linum-mode yas/minor-mode)
+  399
+  '(nil nil)
+  nil
+  nil
+  '((tab-width . 8) (indent-tabs-mode) (buffer-file-coding-system . undecided-unix)))
+
+(desktop-create-buffer 206
+  "/Users/davidnolen/Desktop/Development/pysol/solmath/__init__.py"
+  "__init__.py"
+  'python-mode
+  '(abbrev-mode linum-mode yas/minor-mode)
+  21
+  '(nil nil)
+  nil
+  nil
+  '((tab-width . 8) (indent-tabs-mode) (buffer-file-coding-system . undecided-unix)))
+
+(desktop-create-buffer 206
+  nil
+  "solmath"
+  'dired-mode
+  '(abbrev-mode linum-mode yas/minor-mode)
+  405
+  '(nil nil)
+  t
+  '("/Users/davidnolen/Desktop/Development/pysol/solmath/")
+  nil)
+
+(desktop-create-buffer 206
+  nil
+  "pysol"
+  'dired-mode
+  '(abbrev-mode linum-mode yas/minor-mode)
+  1244
+  '(nil nil)
+  t
+  '("/Users/davidnolen/Desktop/Development/pysol/")
+  nil)
+
+(desktop-create-buffer 206
+  "/Users/davidnolen/Desktop/Development/Lisp/cl-module/module.lisp"
+  "module.lisp"
+  'lisp-mode
+  '(abbrev-mode slime-mode linum-mode yas/minor-mode paredit-mode)
+  529
+  '(nil nil)
+  nil
+  nil
+  '((buffer-file-coding-system . undecided-unix)))
 

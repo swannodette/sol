@@ -17,22 +17,61 @@ class HPGLSurface(surface.base.SolSurface):
     import StringIO
     
     surface.base.SolSurface.__init__(self, supportsImmediateMode=True)
-    self.renderList = []
-    self.currentPathRenderList = []
+    self.setRenderList([])
+    self.setCurrentPathRenderList([])
     self.initializeDevice()
-    pass
+
+  
+  def renderList(self):
+    return self.__renderList
+
+
+  def setRenderList(self, newList):
+    self.__renderList = newList
+
+
+  def addToRenderList(self, data):
+    """
+    Adds an instruction or a list of instructions to
+    the internal render list.
+    """
+    if isinstance(data, str):
+      self.__renderList.append(data)
+    if isinstance(data, list):
+      self.__renderList.extend(data)
+
+    
+  def addToCurrentPathRenderList(self, data):
+    """
+    """
+    if isinstance(data, str):
+      self.__currentPathRenderList.append(data)
+    if isinstance(data, list):
+      self.__currentPathRenderList.extend(data)
+
+
+  def setCurrentPathRenderList(self, newList):
+    """
+      
+    Arguments:
+    - `newList`:
+    """
+    self.__currentPathRenderList = newList
+
+  
+  def currentPathRenderList(self):
+    return self.__currentPathRenderList
 
   
   def initializeDevice(self):
     """
     Generates the instructions needed to initialize the plotter.
     """
-    self.renderList.append(".(;")
-    self.renderList.append(".I81;")
-    self.renderList.append(";")
-    self.renderList.append("17:.N;")
-    self.renderList.append("19:IN;")
-    pass
+    self.addToRenderList(".(;")
+    self.addToRenderList(".I81;")
+    self.addToRenderList(";")
+    self.addToRenderList("17:.N;")
+    self.addToRenderList("19:IN;")
 
 
   def setCurrentPath(self, path):
@@ -71,15 +110,11 @@ class HPGLSurface(surface.base.SolSurface):
 
 
   def parseMoveTo(self, point):
-    print point
-    self.currentPathRenderList.append("PU;")
-    self.currentPathRenderList.append("PA%d,%d;" % tuple(point))
-    pass
+    return ["PU;","PA%d,%d;" % tuple(point), "PD;"]
 
 
   def parseLineTo(self, point):
-    self.currentPathRenderList.append("PA%d,%d;" % tuple(point))
-    pass
+    return "PA%d,%d;" % tuple(point)
 
 
   def parseArcTo(self, arguments):
@@ -88,18 +123,6 @@ class HPGLSurface(surface.base.SolSurface):
 
   def parseBezierTo(self, arguments):
     # decompose the bezier
-    pass
-
-
-  def parseStroke(self):
-    # commit the path
-    self.renderList.append("PD;")
-    self.renderList.extend(self.currentPathRenderList);
-    pass
-
-
-  def parseFill(self):
-    # commit the path
     pass
 
 
@@ -114,8 +137,9 @@ class HPGLSurface(surface.base.SolSurface):
       methodName = "parse%s" % solutils.string.capitalize(instruction[0])
       print methodName
       # extend the render list with the result
-      getattr(self, methodName)(instruction[1])
-    return self
+      self.addToCurrentPathRenderList(getattr(self, methodName)(instruction[1]))
+
+    return self.currentPathRenderList()
 
 
   def processLayer(self, path):
@@ -132,16 +156,22 @@ class HPGLSurface(surface.base.SolSurface):
     """
     displayList = self.context().displayList()
     print "toHPGL"
-    print displayList
     # build a z table for hidden line removal
     for object in displayList:
-      print "object %s" % object
       if object.__class__ == solobjects.path.SolPath:
-        self.processPath(object)
+        self.addToRenderList(self.processPath(object))
       if object.__class__ == solobjects.layer.SolLayer:
-        self.processLayer(object)
-    # process each layer
-    print self.renderList
+        self.addToRenderList(self.processLayer(object))
+    self.addToRenderList("PU;")
+    print "Finished!"
+
+
+  def printRenderList(self):
+    """
+    For debugging print the render list in a human readable format.
+    """
+    for instruction in self.renderList():
+      print instruction
 
 
   def writeToPlotter(self):
@@ -164,7 +194,7 @@ class HPGLSurface(surface.base.SolSurface):
       # for handshaking
       ser.read()
 
-    for command in self.renderList:
+    for command in self.__renderList:
       hpglcom(command)
 
 

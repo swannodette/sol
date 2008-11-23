@@ -9,7 +9,7 @@ import surface.hpgl 		# load hpgl support
 # StringIO.StringIO(bufferString) creates an input "file"
 
 # Immediate mode will render right away if appropiate
-# Batch will render when flushed
+# Batch will render when flushedxo
 
 ctxt = None
 def test():
@@ -21,6 +21,7 @@ def test():
   ctxt.closePath()
   ctxt.stroke()
   ctxt.surface().toHPGL()
+  ctxt.surface().printRenderList()
     
 """
 surface = HPGLSurface()
