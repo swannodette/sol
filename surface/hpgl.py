@@ -4,6 +4,8 @@ import surface.base
 import solobjects.path
 import solobjects.layer
 
+PAPER_SIZE_A4 = 0
+
 # ========================================
 # HPGLSurface
 # ========================================
@@ -12,16 +14,47 @@ class HPGLSurface(surface.base.SolSurface):
   """
   Output to device or to a text file.
   """
-  def __init__(self):
+
+  __renderList = []
+  __currentPathRenderList = []
+  __mediaSize = []
+  __scalex = 100
+  __scaley = 100
+
+
+  def __init__(self, scaleX=100, scaleY=100, mediaSize=None):
     # for treating strings like streams; good ol' Lisp
     import StringIO
     
     surface.base.SolSurface.__init__(self, supportsImmediateMode=True)
+
     self.setRenderList([])
     self.setCurrentPathRenderList([])
-    self.initializeDevice()
+    self.setScale(scaleX, scaleY)
+    self.setMediaSize(mediaSize or PAPER_SIZE_A4)
+
+
+  def drawing(self):
+    return self.deviceInitializers() +      \
+           self.plotterUnitInitializers() + \
+           self.scaleInitializers() +       \
+           self.renderList()
 
   
+  def setMediaSize(self, size):
+    """
+    Sets the media size.
+    """
+    self.__mediaSize = size
+
+
+  def mediaSize(self):
+    """
+    Returns the media size, one of the above paper size constants.
+    """
+    return self.__mediaSize
+
+
   def renderList(self):
     return self.__renderList
 
@@ -43,6 +76,8 @@ class HPGLSurface(surface.base.SolSurface):
     
   def addToCurrentPathRenderList(self, data):
     """
+    Adds instructions to the current path's
+    render list.
     """
     if isinstance(data, str):
       self.__currentPathRenderList.append(data)
@@ -63,15 +98,49 @@ class HPGLSurface(surface.base.SolSurface):
     return self.__currentPathRenderList
 
   
-  def initializeDevice(self):
+  def deviceInitializers(self):
     """
     Generates the instructions needed to initialize the plotter.
     """
-    self.addToRenderList(".(;")
-    self.addToRenderList(".I81;")
-    self.addToRenderList(";")
-    self.addToRenderList("17:.N;")
-    self.addToRenderList("19:IN;")
+    return [".(;", ".I81;", ";", "17:.N;", "19:IN;"]
+
+
+  def plotterUnitInitializers(self):
+    """
+    Returns the instruction required to set plotter and user coordinates.
+    """
+    if self.mediaSize() == PAPER_SIZE_A4:
+      return ["IP0,0,10760,8200"]
+
+
+  def setScale(self, x, y):
+    """
+    Sets the scale of the drawing.
+    """
+    self.__xscale = x
+    self.__yscale = y
+
+
+  def xscale(self):
+    return self.__xscale
+
+
+  def yscale(self):
+    return self.__yscale
+
+
+  def getScale(self):
+    """
+    Returns the scale of this drawing.
+    """
+    return (self.xscale(), self.yscale())
+
+
+  def scaleInitializers(self):
+    """
+    Return the scale initializers.
+    """
+    return ["SC0,%s,0,%s" % self.getScale()]
 
 
   def setCurrentPath(self, path):
@@ -130,12 +199,9 @@ class HPGLSurface(surface.base.SolSurface):
     """
     Process a single path.
     """
-    print "Processing path"
     self.setCurrentPath(path)
     for instruction in path.instructions():
-      print instruction
       methodName = "parse%s" % solutils.string.capitalize(instruction[0])
-      print methodName
       # extend the render list with the result
       self.addToCurrentPathRenderList(getattr(self, methodName)(instruction[1]))
 
@@ -155,7 +221,6 @@ class HPGLSurface(surface.base.SolSurface):
     Converts the display list of the associated Sol context to HPGL instructions.
     """
     displayList = self.context().displayList()
-    print "toHPGL"
     # build a z table for hidden line removal
     for object in displayList:
       if object.__class__ == solobjects.path.SolPath:
@@ -163,14 +228,13 @@ class HPGLSurface(surface.base.SolSurface):
       if object.__class__ == solobjects.layer.SolLayer:
         self.addToRenderList(self.processLayer(object))
     self.addToRenderList("PU;")
-    print "Finished!"
 
 
   def printRenderList(self):
     """
     For debugging print the render list in a human readable format.
     """
-    for instruction in self.renderList():
+    for instruction in self.drawing():
       print instruction
 
 
@@ -194,7 +258,7 @@ class HPGLSurface(surface.base.SolSurface):
       # for handshaking
       ser.read()
 
-    for command in self.__renderList:
+    for command in self.drawing:
       hpglcom(command)
 
 
