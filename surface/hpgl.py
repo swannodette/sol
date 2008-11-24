@@ -55,6 +55,13 @@ class HPGLSurface(surface.base.SolSurface):
     return self.__mediaSize
 
 
+  def setPen(self, path):
+    """
+    Set the current pen based on path information.
+    """
+    self.addToRenderList("SP1;")
+
+
   def renderList(self):
     return self.__renderList
 
@@ -110,7 +117,8 @@ class HPGLSurface(surface.base.SolSurface):
     Returns the instruction required to set plotter and user coordinates.
     """
     if self.mediaSize() == PAPER_SIZE_A4:
-      return ["IP0,0,10760,8200"]
+      #return ["IP0,0,10760,8200;"]
+      return ["IP0,0,10760,10760;"]
 
 
   def setScale(self, x, y):
@@ -119,6 +127,14 @@ class HPGLSurface(surface.base.SolSurface):
     """
     self.__xscale = x
     self.__yscale = y
+
+
+  def setClipping(self):
+    """
+    Returns the clipping instructions.
+    """
+    # IW, input window
+    pass
 
 
   def xscale(self):
@@ -140,7 +156,7 @@ class HPGLSurface(surface.base.SolSurface):
     """
     Return the scale initializers.
     """
-    return ["SC0,%s,0,%s" % self.getScale()]
+    return ["SC0,%s,0,%s;" % self.getScale()]
 
 
   def setCurrentPath(self, path):
@@ -200,6 +216,7 @@ class HPGLSurface(surface.base.SolSurface):
     Process a single path.
     """
     self.setCurrentPath(path)
+    self.setPen(path)
     for instruction in path.instructions():
       methodName = "parse%s" % solutils.string.capitalize(instruction[0])
       # extend the render list with the result
@@ -238,18 +255,25 @@ class HPGLSurface(surface.base.SolSurface):
       print instruction
 
 
+  def connectToPlotter(self):
+    try:
+      ser = serial.Serial("/dev/tty.KeySerial1", 9600,
+                    timeout = 	1,
+                    bytesize = 	serial.EIGHTBITS,
+                    stopbits = 	serial.STOPBITS_ONE,
+                    parity =	serial.PARITY_ODD,
+                    xonxoff = 	1)
+      return ser
+    except Exception:
+      return None
+
+
   def writeToPlotter(self):
     """
     Write out the render list to the plotter.
     """
     # open up a connection, good defaults, should explore this more
-    ser = serial.Serial("/dev/tty.KeySerial1", 9600,
-                        timeout = 	1,
-                        bytesize = 	serial.EIGHTBITS,
-                        stopbits = 	serial.STOPBITS_ONE,
-                        parity =	serial.PARITY_ODD,
-                        xonxoff = 	1)
-    
+    ser = self.connectToPlotter()    
 
     def hpglcom(command):
       print "send %s" % command
@@ -258,7 +282,11 @@ class HPGLSurface(surface.base.SolSurface):
       # for handshaking
       ser.read()
 
-    for command in self.drawing:
-      hpglcom(command)
+    if ser != None:
+      for command in self.drawing():
+        hpglcom(command)
+      ser.close()
+    else:
+      print "No plotter connected, please connect one."
 
 
