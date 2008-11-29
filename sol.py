@@ -11,6 +11,8 @@ import surface.hpgl 		# load hpgl support
 # Immediate mode will render right away if appropiate
 # Batch will render when flushed
 
+# testing adding comments
+
 ctxt = None
 def test():
   global ctxt
