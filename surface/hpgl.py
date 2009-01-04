@@ -6,12 +6,14 @@ import solobjects.layer
 
 PAPER_SIZE_A4 = "A4"
 
+# x y dimensions are swapped when
+# using the plotter
 HPGLMediaDimensionsTable = {
-  "A4": (216, 279),
+  "A4": (279, 216),
 }
 
 HPGLMediaMarginsTable = {
-  "A4": (5, 5, 5, 5)
+  "A4": (16, 12, 4, 12)
 }
 
 HPGLMediaRatioTable = {
