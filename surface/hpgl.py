@@ -50,7 +50,8 @@ class HPGLSurface(surface.base.SolSurface):
     self.setRenderList([])
     self.setCurrentPathRenderList([])
     #self.setScale(scaleX, scaleY)
-    self.setScale(100, 100)
+    #self.setScale(100, 100)
+    self.setScale(10, 10)
     self.setMediaSize(mediaSize)
 
 
@@ -156,7 +157,7 @@ class HPGLSurface(surface.base.SolSurface):
     """
     if self.mediaSize() == PAPER_SIZE_A4:
       #return ["IP0,0,10760,8200;"]
-      return ["IP0,0,4000,4000;"]
+      return ["IP0,0,10,10;"]
 
 
   def setScale(self, x, y):
