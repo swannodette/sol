@@ -35,10 +35,10 @@ class HPGLSurface(surface.base.SolSurface):
 
 
   def drawing(self):
-    return self.deviceInitializers() +      \
-           self.plotterUnitInitializers() + \
-           self.scaleInitializers() +       \
-           self.renderList()
+    return (self.deviceInitializers() +
+            self.plotterUnitInitializers() + 
+            self.scaleInitializers() +       
+            self.renderList())
 
   
   def setMediaSize(self, size):
@@ -46,6 +46,20 @@ class HPGLSurface(surface.base.SolSurface):
     Sets the media size.
     """
     self.__mediaSize = size
+
+  
+  def setOrtho2D(self, x, y, width, height):
+    """
+    Set the scale and units of the drawing surface.
+    """
+    pass
+
+
+  def setViewport(self, x, y, width, height):
+    """
+    Set the viewport of the surface.
+    """
+    pass
 
 
   def mediaSize(self):
@@ -134,6 +148,13 @@ class HPGLSurface(surface.base.SolSurface):
     Returns the clipping instructions.
     """
     # IW, input window
+    pass
+
+
+  def mapPoint(self, vector):
+    """
+    Convert a floating point value to the destination value.
+    """
     pass
 
 
