@@ -6,12 +6,14 @@ import solobjects.layer
 
 PAPER_SIZE_A4 = "A4"
 
+# x y dimensions are swapped when
+# using the plotter
 HPGLMediaDimensionsTable = {
-  "A4": (216, 279),
+  "A4": (279, 216),
 }
 
 HPGLMediaMarginsTable = {
-  "A4": (5, 5, 5, 5)
+  "A4": (16, 12, 4, 12)
 }
 
 HPGLMediaRatioTable = {
@@ -48,7 +50,8 @@ class HPGLSurface(surface.base.SolSurface):
     self.setRenderList([])
     self.setCurrentPathRenderList([])
     #self.setScale(scaleX, scaleY)
-    self.setScale(100, 100)
+    #self.setScale(100, 100)
+    self.setScale(10, 10)
     self.setMediaSize(mediaSize)
 
 
@@ -154,7 +157,7 @@ class HPGLSurface(surface.base.SolSurface):
     """
     if self.mediaSize() == PAPER_SIZE_A4:
       #return ["IP0,0,10760,8200;"]
-      return ["IP0,0,4000,4000;"]
+      return ["IP0,0,10,10;"]
 
 
   def setScale(self, x, y):
