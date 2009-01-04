@@ -1,7 +1,3 @@
-import serial 			# for talking to the plotter, install from sourceforge
-import copy 			# for copying objects
-
-import solmath.vector 		# custom vector class
 import solcontext		# load the context class
 import surface.hpgl 		# load hpgl support
 
@@ -25,33 +21,3 @@ def test():
   ctxt.surface().toHPGL()
   ctxt.surface().printRenderList()
   ctxt.surface().writeToPlotter()
-
-    
-"""
-surface = HPGLSurface()
-context = SolContext(surface)
-
-context.beginPath()
-context.moveTo(0, 0)
-context.lineTo(100, 0)
-context.lineTo(0, 100)
-context.lineTo(100, 100)
-context.lineTo(0, 100)
-context.closePath()
-context.stroke()
-
-# open up a connection, good defaults, should explore this more
-ser = serial.Serial("/dev/tty.USA19H3d1P1.1", 9600,
-              timeout = 	1,
-              bytesize = 	serial.EIGHTBITS,
-              stopbits = 	serial.STOPBITS_ONE,
-              parity =		serial.PARITY_ODD,
-              xonxoff = 	1)
-
-hpgl = surface.toHPGL()
-
-for instruction in hpgl:
-  ser.write(instruction)
-
-ser.close()
-"""

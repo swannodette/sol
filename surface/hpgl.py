@@ -4,7 +4,7 @@ import surface.base
 import solobjects.path
 import solobjects.layer
 
-PAPER_SIZE_A4 = 0
+PAPER_SIZE_A4 = "A4"
 
 HPGLMediaDimensionsTable = {
   "A4": (216, 279),
@@ -12,6 +12,11 @@ HPGLMediaDimensionsTable = {
 
 HPGLMediaMarginsTable = {
   "A4": (5, 5, 5, 5)
+}
+
+HPGLMediaRatioTable = {
+  "A4": float(HPGLMediaDimensionsTable["A4"][0])/
+        float(HPGLMediaDimensionsTable["A4"][1])
 }
 
 # ========================================
@@ -30,7 +35,11 @@ class HPGLSurface(surface.base.SolSurface):
   __scaley = 100
 
 
-  def __init__(self, scaleX=100, scaleY=100, mediaSize=None):
+  def __init__(self, 
+               x=0, y=0, 
+               width=HPGLMediaRatioTable["A4"]*100, 
+               height=100, 
+               mediaSize=PAPER_SIZE_A4):
     # for treating strings like streams; good ol' Lisp
     import StringIO
     
@@ -38,8 +47,9 @@ class HPGLSurface(surface.base.SolSurface):
 
     self.setRenderList([])
     self.setCurrentPathRenderList([])
-    self.setScale(scaleX, scaleY)
-    self.setMediaSize(mediaSize or PAPER_SIZE_A4)
+    #self.setScale(scaleX, scaleY)
+    self.setScale(100, 100)
+    self.setMediaSize(mediaSize)
 
 
   def drawing(self):
@@ -144,7 +154,7 @@ class HPGLSurface(surface.base.SolSurface):
     """
     if self.mediaSize() == PAPER_SIZE_A4:
       #return ["IP0,0,10760,8200;"]
-      return ["IP0,0,10760,10760;"]
+      return ["IP0,0,4000,4000;"]
 
 
   def setScale(self, x, y):
