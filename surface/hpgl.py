@@ -6,6 +6,14 @@ import solobjects.layer
 
 PAPER_SIZE_A4 = 0
 
+HPGLMediaDimensionsTable = {
+  "A4": (216, 279),
+}
+
+HPGLMediaMarginsTable = {
+  "A4": (5, 5, 5, 5)
+}
+
 # ========================================
 # HPGLSurface
 # ========================================
@@ -52,6 +60,7 @@ class HPGLSurface(surface.base.SolSurface):
     """
     Set the scale and units of the drawing surface.
     """
+    
     pass
 
 
@@ -116,6 +125,9 @@ class HPGLSurface(surface.base.SolSurface):
 
   
   def currentPathRenderList(self):
+    """
+    Returns the current path render list.
+    """
     return self.__currentPathRenderList
 
   
