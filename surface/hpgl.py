@@ -3,6 +3,7 @@ import solutils.string
 import surface.base
 import solobjects.path
 import solobjects.layer
+import solmath.vector
 
 PAPER_SIZE_A4 = "A4"
 
@@ -10,6 +11,10 @@ PAPER_SIZE_A4 = "A4"
 # using the plotter
 HPGLMediaDimensionsTable = {
   "A4": (279, 216),
+}
+
+HPGLMediaMaxDimensionsTable = {
+  "A4": (10160, 7840)
 }
 
 HPGLMediaMarginsTable = {
@@ -38,9 +43,10 @@ class HPGLSurface(surface.base.SolSurface):
 
 
   def __init__(self, 
-               x=0, y=0, 
-               width=HPGLMediaRatioTable["A4"]*100, 
-               height=100, 
+               left=0.0, 
+               bottom=0.0, 
+               right=1.0, 
+               top=1.0,
                mediaSize=PAPER_SIZE_A4):
     # for treating strings like streams; good ol' Lisp
     import StringIO
@@ -49,13 +55,15 @@ class HPGLSurface(surface.base.SolSurface):
 
     self.setRenderList([])
     self.setCurrentPathRenderList([])
-    #self.setScale(scaleX, scaleY)
-    #self.setScale(100, 100)
-    self.setScale(10, 10)
+    self.setScale(1, 1)
     self.setMediaSize(mediaSize)
+    self.setOrtho2D(left, bottom, right, top)
 
 
   def drawing(self):
+    """
+    Generates all the instructions of the drawing.
+    """
     return (self.deviceInitializers() +
             self.plotterUnitInitializers() + 
             self.scaleInitializers() +       
@@ -68,13 +76,49 @@ class HPGLSurface(surface.base.SolSurface):
     """
     self.__mediaSize = size
 
+
+  def mediaSize(self):
+    return self.__mediaSize
+
   
-  def setOrtho2D(self, x, y, width, height):
+  def setOrtho2D(self, left, bottom, right, top):
     """
     Set the scale and units of the drawing surface.
     """
+    mediaSize = self.mediaSize()
+
+    width = abs(left-right)
+    height = abs(top-bottom)
+
+    if width >= height:
+      height = width * (1.0/HPGLMediaRatioTable[mediaSize])
+    else:
+      width = height * HPGLMediaRatioTable[mediaSize]
     
-    pass
+    self.__orthod2d = (solmath.vector.Vector(bottom, left), 
+                       solmath.vector.Vector(width, height))
+
+    print "Printing ortho!"
+    print self.__orthod2d
+
+
+  def ortho2D(self):
+    """
+    Return the coordinate system.
+    """
+    return self.__orthod2d
+
+
+  def width(self):
+    return self.__orthod2d[2]
+
+
+  def height(self):
+    return self.__orthod2d[3]
+
+
+  def origin(self):
+    return (self.__orthod2d[0], self.__orthod2d[1])
 
 
   def setViewport(self, x, y, width, height):
@@ -156,8 +200,7 @@ class HPGLSurface(surface.base.SolSurface):
     Returns the instruction required to set plotter and user coordinates.
     """
     if self.mediaSize() == PAPER_SIZE_A4:
-      #return ["IP0,0,10760,8200;"]
-      return ["IP0,0,10,10;"]
+      return ["IP0,0,1,1;"]
 
 
   def setScale(self, x, y):
@@ -180,7 +223,11 @@ class HPGLSurface(surface.base.SolSurface):
     """
     Convert a floating point value to the destination value.
     """
-    pass
+    dim = HPGLMediaMaxDimensionsTable[self.mediaSize()]
+    origin = self.ortho2D()[0]
+    size = self.ortho2D()[1]
+    # (v - ov) * dim.x/ov.x
+    return ((vector - origin) * (dim[0]/size.x)).int()
 
 
   def xscale(self):
@@ -302,6 +349,10 @@ class HPGLSurface(surface.base.SolSurface):
 
 
   def connectToPlotter(self):
+    """
+    Make a serial connection to a plotter. Assumes your using
+    the KeySpan highspeed USB to DB9 dongle.
+    """
     try:
       ser = serial.Serial("/dev/tty.KeySerial1", 9600,
                     timeout = 	1,

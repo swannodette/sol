@@ -8,6 +8,8 @@ import surface.hpgl 		# load hpgl support
 # Batch will render when flushed
 
 ctxt = None
+surf = None
+
 def test():
   global ctxt
   ctxt = solcontext.SolContext(surface.hpgl.HPGLSurface())
@@ -22,6 +24,7 @@ def test():
   ctxt.surface().printRenderList()
   ctxt.surface().writeToPlotter()
 
+
 def test2():
   global ctxt
   ctxt = solcontext.SolContext(surface.hpgl.HPGLSurface())
@@ -35,5 +38,16 @@ def test2():
   ctxt.surface().toHPGL()
   ctxt.surface().printRenderList()
   ctxt.surface().writeToPlotter()
+
+
+def test3():
+  global ctxt
+  global surf
+  surf = surface.hpgl.HPGLSurface(left=0, bottom=0, right=2.0, top=1.0, 
+                                  mediaSize=surface.hpgl.PAPER_SIZE_A4)
+  ctxt = solcontext.SolContext(surf)
+
+  from solmath.vector import Vector
+  print surf.mapPoint(Vector(1.0, 1.0))
 
 

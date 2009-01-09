@@ -27,10 +27,16 @@ class Vector():
   """
   2D Vector class.
   """
-  def __init__(self, x, y):
+  def __init__(self, x, y, integer=False):
+    self.integer = integer
+
     # need to make sure we're dealing with floats here
-    self.x = float(x)
-    self.y = float(y)
+    if not integer:
+      self.x = float(x)
+      self.y = float(y)
+    else:
+      self.x = x
+      self.y = y
 
   def __eq__(self, other):
     if other.__class__ != Vector:
@@ -113,7 +119,10 @@ class Vector():
     """
     Return the string represenation of this vector.
     """
-    return "<%f, %f>" % (self.x, self.y)
+    if not self.integer:
+      return "<%f, %f>" % (self.x, self.y)
+    else:
+      return "<%d, %d>" % (self.x, self.y)
 
   def length(self):
     """
@@ -159,6 +168,12 @@ class Vector():
       self.x = 0
     if IsZero(self.y):
       self.y = 0
+
+  def int(self):
+    """
+    Return a new vector with integer components.
+    """
+    return Vector(int(self.x), int(self.y), integer=True)
 
 
 def ZeroVector():
